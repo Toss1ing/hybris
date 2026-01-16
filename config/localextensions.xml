@@ -1,0 +1,53 @@
+<hybrisconfig xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:noNamespaceSchemaLocation='../bin/platform/resources/schemas/extensions.xsd'>
+  <extensions>
+    <path dir='${HYBRIS_BIN_DIR}' autoload='false' />
+   	<extension name="platformbackoffice"/>
+	<extension name="backoffice"/>
+	<extension name="commerceservices"/>
+	<extension name="commercefacades"/>
+	<extension name="basecommerce"/>
+	<extension name="customerreview"/>
+	<extension name="payment"/>
+	<extension name="promotions"/>
+	<extension name="voucher"/>
+	<extension name="wishlist"/>
+	<extension name="acceleratorservices"/>
+	<extension name="acceleratorfacades"/>
+	<extension name="acceleratorcms"/>
+	<extension name="acceleratorstorefrontcommons"/>
+	<extension name="addonsupport"/>
+	<extension name="assistedservicestorefront"/>
+	<extension name="cms2"/>
+	<extension name="cms2lib"/>
+	<extension name="cmsbackoffice"/>
+	<extension name="cmsfacades"/>
+	<extension name="solrfacetsearch"/>
+	<extension name="solrfacetsearchbackoffice"/>
+	<extension name="solrserver"/>
+	<extension name="backofficesolrsearch"/>
+	<extension name="adaptivesearch"/>
+	<extension name="adaptivesearchbackoffice"/>
+	<extension name="adaptivesearchsolr"/>
+	<extension name="promotionengineservices"/>
+	<extension name="promotionenginebackoffice"/>
+	<extension name="ruleengine"/>
+	<extension name="ruleenginebackoffice"/>
+	<extension name="droolsruleengineservices"/>
+	<extension name="couponservices"/>
+	<extension name="couponbackoffice"/>
+	<extension name="mediaconversion"/>
+	<extension name="processing"/>
+	<extension name="patches"/>
+	<extension name="electronicsstore"/>
+	<extension name="apparelstore"/>
+
+	<extension dir="${HYBRIS_BIN_DIR}/custom/training/trainingbackoffice"/>
+	<extension dir="${HYBRIS_BIN_DIR}/custom/training/trainingcore"/>
+    <extension dir="${HYBRIS_BIN_DIR}/custom/training/traininginitialdata"/>
+    <extension dir="${HYBRIS_BIN_DIR}/custom/training/trainingstorefront"/>
+	<extension dir="${HYBRIS_BIN_DIR}/custom/training/trainingfulfilmentprocess"/>
+	<extension dir="${HYBRIS_BIN_DIR}/custom/training/trainingfacades"/>
+
+	<extension name="qaddon"/>
+  </extensions>
+</hybrisconfig>

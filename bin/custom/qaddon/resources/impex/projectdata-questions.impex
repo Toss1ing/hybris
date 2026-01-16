@@ -1,0 +1,15 @@
+$productCatalog = electronicsProductCatalog
+$contentCatalog = electronicsContentCatalog
+$productCV = catalogversion(catalog(id[default = $productCatalog]), version[default = 'Online'])[unique = true, default = $productCatalog:Online]
+$contentCV = catalogversion(catalog(id[default = $contentCatalog]), version[default = 'Online'])[unique = true, default = $contentCatalog:Online]
+
+INSERT_UPDATE Question; code[unique = true]; question    ; answer  ; questionCustomer(uid); answerCustomer(uid); product(code, $productCV)
+                      ; Q001               ; Question_1? ; Anwer_1 ; anonymous            ; anonymous          ; 443175
+                      ; Q002               ; Question_2? ; Anwer_2 ; anonymous            ; anonymous          ; 443175
+                      ; Q003               ; Question_3? ; Anwer_3 ; anonymous            ; anonymous          ; 443175
+
+INSERT_UPDATE QuestionsCMSComponent; uid[unique = true] ; numberOfQuestionsToShow; font; catalogVersion(catalog(id), version)[unique = true]
+                                   ; QuestionsComponent ; 4                      ; 13  ; electronicsContentCatalog:Online
+
+INSERT_UPDATE ContentSlot; uid[unique = true]; cmsComponents(uid, catalogVersion(catalog(id), version))[mode = append]; catalogVersion(catalog(id), version)[unique = true]
+                         ; TabsSlot          ; QuestionsComponent:electronicsContentCatalog:Online                    ; electronicsContentCatalog:Online;

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Copyright (c) 2019 SAP SE or an SAP affiliate company. All rights reserved.
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/aop
+           http://www.springframework.org/schema/aop/spring-aop.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context.xsd">
+           
+    <context:annotation-config/> 
+
+	<bean id="qaddonCoreDataImportedEventListener" parent="abstractCoreDataImportedEventListener">
+		<property name="supportedChannels">
+			<list value-type="de.hybris.platform.commerceservices.enums.SiteChannel">
+				<value>B2C</value>
+				<!--
+								<value>B2B</value>
+				-->
+			</list>
+		</property>
+		<property name="addonExtensionMetadata">
+			<bean class="de.hybris.platform.addonsupport.data.AddonExtensionMetadata">
+				<property name="suffixChannel" value="false"/>
+				<property name="baseExtensionName" value="qaddon"/>
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="qaddonSampleDataEventListener" parent="abstractGenericAddOnSampleDataEventListener"  >
+		<property name="extensionName" value="qaddon" />
+	</bean>
+
+	<alias name="defaultQuestionConverter" alias="questionConverter"/>
+	<bean id="defaultQuestionConverter" parent="abstractPopulatingConverter">
+		<property name="targetClass" value="questions.data.QuestionData"/>
+		<property name="populators">
+			<list>
+				<ref bean="questionPopulator"/>
+			</list>
+		</property>
+	</bean>
+
+	<alias name="defaultQuestionPopulator" alias="questionPopulator"/>
+	<bean id="defaultQuestionPopulator" class="org.training.populators.QuestionPopulator">
+		<constructor-arg ref="principalConverter"/>
+	</bean>
+
+	<bean id="productQuestionsPopulator" class="org.training.populators.ProductQuestionsPopulator">
+		<constructor-arg ref="questionConverter"/>
+	</bean>
+
+	<bean parent="modifyPopulatorList">
+		<property name="list" ref="productConverter"/>
+		<property name="add" ref="productQuestionsPopulator"/>
+	</bean>
+
+	<bean id="questionData" class="questions.data.QuestionData" scope="prototype"/>
+
+</beans>
