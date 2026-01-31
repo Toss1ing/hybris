@@ -16,10 +16,6 @@ public class ProductQuestionsPopulator implements Populator<ProductModel, Produc
 
     private final Converter<QuestionModel, QuestionData> questionConverter;
 
-    protected Converter<QuestionModel, QuestionData> getQuestionConverter() {
-        return questionConverter;
-    }
-
     public ProductQuestionsPopulator(Converter<QuestionModel, QuestionData> questionConverter) {
         this.questionConverter = questionConverter;
     }
@@ -29,8 +25,9 @@ public class ProductQuestionsPopulator implements Populator<ProductModel, Produc
         if (CollectionUtils.isNotEmpty(source.getQuestions())) {
             List<QuestionData> questions = new ArrayList<>();
             for (QuestionModel questionModel : source.getQuestions()) {
-                questions.add(getQuestionConverter().convert(questionModel));
+                questions.add(questionConverter.convert(questionModel));
             }
+
             target.setQuestions(questions);
         }
     }

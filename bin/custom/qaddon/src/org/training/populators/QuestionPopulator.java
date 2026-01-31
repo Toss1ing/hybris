@@ -15,7 +15,7 @@ public class QuestionPopulator implements Populator<QuestionModel, QuestionData>
         return principalConverter;
     }
 
-    public QuestionPopulator(final Converter<PrincipalModel, PrincipalData> principalConverter) {
+    public QuestionPopulator(Converter<PrincipalModel, PrincipalData> principalConverter) {
         this.principalConverter = principalConverter;
     }
 

@@ -13,8 +13,8 @@
            http://www.springframework.org/schema/context
            http://www.springframework.org/schema/context/spring-context.xsd">
            
-    <context:annotation-config/> 
-	<context:component-scan base-package="org.training.controllers" scope-resolver="de.hybris.platform.spring.IgnoreTenantScopeMetadataResolver" />
+    <context:annotation-config/>
+	<context:component-scan base-package="org.training.controllers"/>
 
 	<bean id="defaultQaddonJavaScriptMessageResourceAccessor" parent="abstractJavaScriptMessageResourceAccessor">
 		<property name="addOnName" value="qaddon"/>
@@ -31,6 +31,21 @@
 	</bean>
 	<bean id="QaddonBeforeViewHandlerListMergeDirective" depends-on="beforeViewHandlersList" parent="listMergeDirective">
 		<property name="add" ref="getQaddonBeforeViewHandler"/>
+	</bean>
+
+	<bean id="questionsBeforeViewHandler" class="org.training.interceptors.beforeview.QuestionsBeforeViewHandler">
+		<constructor-arg ref="questionsProductFacade"/>
+		<constructor-arg ref="productService"/>
+	</bean>
+
+	<bean id="getQaddonQuestionsBeforeViewHandler" parent="beforeViewHandlerAdapter">
+		<property name="adaptee">
+			<ref bean="questionsBeforeViewHandler"/>
+		</property>
+	</bean>
+
+	<bean id="QaddonQuestionsBeforeViewHandlerListMergeDirective" depends-on="beforeViewHandlersList" parent="listMergeDirective">
+		<property name="add" ref="getQaddonQuestionsBeforeViewHandler"/>
 	</bean>
 
 </beans>
