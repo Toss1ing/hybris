@@ -1,0 +1,21 @@
+$productCatalog = electronicsProductCatalog
+$productCV = catalogversion(catalog(id[default = $productCatalog]), version[default = 'Online'])[unique = true, default = $productCatalog:Online]
+$currency = USD
+$unit = pieces
+
+INSERT_UPDATE UserPriceGroup; code[unique = true]
+                            ; questionPriceGroup
+
+INSERT_UPDATE Customer; uid[unique = true]    ; name                    ; groups(uid)   ; customerID            ; sessionLanguage(isocode); sessionCurrency(isocode); Europe1PriceFactory_UPG(code)
+                      ; questionpricecustomer ; Question Price Customer ; customergroup ; questionpricecustomer ; en                      ; $currency               ; questionPriceGroup
+
+INSERT_UPDATE PriceRow; product(code, $productCV)[unique = true]; ug(code)[allownull = true]; net[default = false]; currency(isocode)[unique = true]; price ; unit(code); minqtd[unique = true]; unitFactor
+                      ; 443175                                  ; questionPriceGroup        ;                     ; $currency                       ; 20.00 ; $unit     ; 1                    ; 1
+                      ; 443175                                  ; questionPriceGroup        ;                     ; $currency                       ; 18.00 ; $unit     ; 5                    ; 1
+                      ; 443175                                  ; questionPriceGroup        ;                     ; $currency                       ; 15.00 ; $unit     ; 10                   ; 1
+
+INSERT_UPDATE PriceRow; product(code, $productCV)[unique = true]; ug(code)[allownull = true]; net[default = false]; currency(isocode)[unique = true]; price ; unit(code); minqtd[unique = true]; unitFactor
+                      ; 4786113                                 ; questionPriceGroup        ;                     ; $currency                       ; 20.00 ; $unit     ; 1                    ; 1
+                      ; 4786113                                 ; questionPriceGroup        ;                     ; $currency                       ; 18.00 ; $unit     ; 5                    ; 1
+                      ; 4786113                                 ; questionPriceGroup        ;                     ; $currency                       ; 15.00 ; $unit     ; 10                   ; 1
+
