@@ -45,6 +45,7 @@
 
     <bean id="questionsProductFacade" class="org.training.facades.product.impl.DefaultQuestionsProductFacade">
         <constructor-arg ref="questionsProductConfiguredPopulator"/>
+        <constructor-arg ref="productService"/>
     </bean>
 
     <bean id="qaddonCoreDataImportedEventListener" parent="abstractCoreDataImportedEventListener">

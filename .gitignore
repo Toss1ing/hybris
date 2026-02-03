@@ -1,7 +1,13 @@
 /log
 /temp
 /bin/platform/**
+
 /bin/custom/training/**
+
+!/bin/custom/training/
+!/bin/custom/training/trainingstorefront/
+!/bin/custom/training/trainingstorefront/**
+
 /bin/modules/**
 /roles
 /data/**

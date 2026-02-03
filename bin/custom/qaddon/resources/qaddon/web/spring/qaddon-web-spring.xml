@@ -1,7 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
- Copyright (c) 2019 SAP SE or an SAP affiliate company. All rights reserved.
--->
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:aop="http://www.springframework.org/schema/aop"
@@ -31,21 +28,6 @@
 	</bean>
 	<bean id="QaddonBeforeViewHandlerListMergeDirective" depends-on="beforeViewHandlersList" parent="listMergeDirective">
 		<property name="add" ref="getQaddonBeforeViewHandler"/>
-	</bean>
-
-	<bean id="questionsBeforeViewHandler" class="org.training.interceptors.beforeview.QuestionsBeforeViewHandler">
-		<constructor-arg ref="questionsProductFacade"/>
-		<constructor-arg ref="productService"/>
-	</bean>
-
-	<bean id="getQaddonQuestionsBeforeViewHandler" parent="beforeViewHandlerAdapter">
-		<property name="adaptee">
-			<ref bean="questionsBeforeViewHandler"/>
-		</property>
-	</bean>
-
-	<bean id="QaddonQuestionsBeforeViewHandlerListMergeDirective" depends-on="beforeViewHandlersList" parent="listMergeDirective">
-		<property name="add" ref="getQaddonQuestionsBeforeViewHandler"/>
 	</bean>
 
 </beans>
