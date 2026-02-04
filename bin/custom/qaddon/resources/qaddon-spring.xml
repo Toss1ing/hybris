@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:annotation-config/>
+
+    <bean id="questionPopulator" class="org.training.populators.QuestionPopulator">
+        <constructor-arg ref="principalConverter"/>
+    </bean>
+
+    <bean id="questionConverter" parent="abstractPopulatingConverter">
+        <property name="targetClass" value="questions.data.QuestionData"/>
+        <property name="populators">
+            <list>
+                <ref bean="questionPopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="productQuestionsPopulator" class="org.training.populators.ProductQuestionsPopulator">
+        <constructor-arg ref="questionConverter"/>
+    </bean>
+
+    <bean id="productQuestionsPopulatorList" parent="abstractPopulatorList">
+        <property name="populators">
+            <list>
+                <ref bean="productQuestionsPopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="questionsProductConfiguredPopulator"
+          class="de.hybris.platform.commercefacades.converter.impl.DefaultConfigurablePopulator">
+        <property name="populators">
+            <map key-type="org.training.facades.product.QuestionsProductOption">
+                <entry key="QUESTIONS" value-ref="productQuestionsPopulatorList"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="questionsProductFacade" class="org.training.facades.product.impl.DefaultQuestionsProductFacade">
+        <constructor-arg ref="questionsProductConfiguredPopulator"/>
+        <constructor-arg ref="productService"/>
+    </bean>
+
+    <bean id="qaddonCoreDataImportedEventListener" parent="abstractCoreDataImportedEventListener">
+        <property name="supportedChannels">
+            <list value-type="de.hybris.platform.commerceservices.enums.SiteChannel">
+                <value>B2C</value>
+                <!--
+                                <value>B2B</value>
+                -->
+            </list>
+        </property>
+        <property name="addonExtensionMetadata">
+            <bean class="de.hybris.platform.addonsupport.data.AddonExtensionMetadata">
+                <property name="suffixChannel" value="false"/>
+                <property name="baseExtensionName" value="qaddon"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="qaddonSampleDataEventListener" parent="abstractGenericAddOnSampleDataEventListener">
+        <property name="extensionName" value="qaddon"/>
+    </bean>
+
+</beans>

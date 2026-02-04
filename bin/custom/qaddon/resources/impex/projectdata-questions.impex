@@ -1,0 +1,22 @@
+$productCatalog = electronicsProductCatalog
+$contentCatalog = electronicsContentCatalog
+$productCV = catalogversion(catalog(id[default = $productCatalog]), version[default = 'Online'])[unique = true, default = $productCatalog:Online]
+$contentCV = catalogversion(catalog(id[default = $contentCatalog]), version[default = 'Online'])[unique = true, default = $contentCatalog:Online]
+
+INSERT_UPDATE Question; code[unique = true]; question; answer  ; questionCustomer(uid); answerCustomer(uid); product(code, $productCV)
+                      ; q003               ; test1_q ; test1_a ; anonymous            ; anonymous          ; 443175
+                      ; q004               ; test2_q ; test2_a ; anonymous            ; anonymous          ; 443175
+                      ; q005               ; test3_q ; test3_a ; anonymous            ; anonymous          ; 443175
+
+INSERT_UPDATE ContentSlotName; name[unique = true]; template(uid, $contentCV)[unique = true][default = 'ProductDetailsPageTemplate']; validComponentTypes(code); compTypeGroup(code)
+                             ; QuestionsSection   ;                                                                                 ; QuestionsCMSComponent    ; wide
+
+INSERT_UPDATE QuestionsCMSComponent; $contentCV[unique = true]; uid[unique = true]        ; name                        ; numberOfQuestionsToShow; font
+                                   ;                          ; QuestionsSectionComponent ; Questions Section Component ; 3                      ; 10
+
+INSERT_UPDATE ContentSlot; $contentCV[unique = true]; uid[unique = true]   ; name              ; active; cmsComponents(uid, $contentCV)
+                         ;                          ; QuestionsSectionSlot ; Questions Section ; true  ; QuestionsSectionComponent
+
+INSERT_UPDATE ContentSlotForTemplate; $contentCV[unique = true]; uid[unique = true]              ; position[unique = true]; pageTemplate(uid, $contentCV)[unique = true][default = 'ProductDetailsPageTemplate']; contentSlot(uid, $contentCV)[unique = true]; allowOverwrite
+                                    ;                          ; QuestionsSection-ProductDetails ; QuestionsSection       ;                                                                                     ; QuestionsSectionSlot                       ; true
+
