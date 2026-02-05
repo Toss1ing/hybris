@@ -2,6 +2,9 @@ $productCatalog = electronicsProductCatalog
 $contentCatalog = electronicsContentCatalog
 $productCV = catalogversion(catalog(id[default = $productCatalog]), version[default = 'Online'])[unique = true, default = $productCatalog:Online]
 $contentCV = catalogversion(catalog(id[default = $contentCatalog]), version[default = 'Online'])[unique = true, default = $contentCatalog:Online]
+$solrIndexedType = electronicsProductType
+$solrSearchQueryTemplate = DEFAULT
+$lang = en
 
 INSERT_UPDATE Question; code[unique = true]; question; answer  ; questionCustomer(uid); answerCustomer(uid); product(code, $productCV)
                       ; q003               ; test1_q ; test1_a ; anonymous            ; anonymous          ; 443175
@@ -20,3 +23,33 @@ INSERT_UPDATE ContentSlot; $contentCV[unique = true]; uid[unique = true]   ; nam
 INSERT_UPDATE ContentSlotForTemplate; $contentCV[unique = true]; uid[unique = true]              ; position[unique = true]; pageTemplate(uid, $contentCV)[unique = true][default = 'ProductDetailsPageTemplate']; contentSlot(uid, $contentCV)[unique = true]; allowOverwrite
                                     ;                          ; QuestionsSection-ProductDetails ; QuestionsSection       ;                                                                                     ; QuestionsSectionSlot                       ; true
 
+INSERT_UPDATE SolrValueRangeSet; name[unique = true]; qualifier; type; solrValueRanges(&rangeValueRefID)
+                               ; questionCountRange ;          ; int ; questionCountRange_0,questionCountRange_1,questionCountRange_2,questionCountRange_3,questionCountRange_4plus
+
+INSERT_UPDATE SolrValueRange; &rangeValueRefID         ; solrValueRangeSet(name)[unique = true]; name[unique = true]; from; to
+                            ; questionCountRange_0     ; questionCountRange                    ; 0                  ; 0   ; 0
+                            ; questionCountRange_1     ; questionCountRange                    ; 1                  ; 1   ; 1
+                            ; questionCountRange_2     ; questionCountRange                    ; 2                  ; 2   ; 2
+                            ; questionCountRange_3     ; questionCountRange                    ; 3                  ; 3   ; 3
+                            ; questionCountRange_4plus ; questionCountRange                    ; 4+                 ; 4   ; 999999
+
+INSERT_UPDATE SolrIndexedProperty; solrIndexedType(identifier)[unique = true]; name[unique = true]; type(code); sortableType(code); currency[default = false]; localized[default = false]; multiValue[default = false]; useForSpellchecking[default = false]; useForAutocomplete[default = false]; facet[default = false]; facetType(code); facetSort(code); priority; visible; includeInResponse; fieldValueProvider          ; valueProviderParameter; rangeSet(name)     ; facetDisplayNameProvider; topValuesProvider        ; customFacetSortProvider
+                                 ; $solrIndexedType                          ; questionCount      ; int       ; int               ; false                    ; false                     ; false                      ; false                               ; false                              ; true                  ; MultiSelectOr  ; Alpha          ; 500     ; true   ; true             ; questionCountValueProvider ;                       ; questionCountRange ;                         ; defaultTopValuesProvider ; facetNameSortProviderAscending
+
+INSERT_UPDATE SolrSearchQueryProperty; indexedProperty(name, solrIndexedType(identifier))[unique = true]; searchQueryTemplate(name, indexedType(identifier))[unique = true]; facet[default = true]; facetType(code); priority; includeInResponse; facetSortProvider              ; facetTopValuesProvider
+                                     ; questionCount:$solrIndexedType                                   ; $solrSearchQueryTemplate:$solrIndexedType                        ; true                 ; MultiSelectOr  ; 500     ; true             ; facetNameSortProviderAscending ; defaultTopValuesProvider
+
+INSERT_UPDATE SolrSort; indexedType(identifier)[unique = true]; code[unique = true] ; useBoost
+                      ; $solrIndexedType                      ; question-count-asc  ; true
+                      ; $solrIndexedType                      ; question-count-desc ; true
+
+INSERT_UPDATE SolrSortField; sort(indexedType(identifier), code)[unique = true]; fieldName[unique = true]; ascending
+                           ; $solrIndexedType:question-count-asc               ; questionCount           ; true
+                           ; $solrIndexedType:question-count-desc              ; questionCount           ; false
+
+UPDATE SolrSort; indexedType(identifier)[unique = true]; code[unique = true] ; name[lang = $lang]
+               ; $solrIndexedType                      ; question-count-asc  ; Least Discussed
+               ; $solrIndexedType                      ; question-count-desc ; Most Discussed
+
+UPDATE SolrIndexedProperty; solrIndexedType(identifier)[unique = true]; name[unique = true]; displayName[lang = $lang]
+                          ; $solrIndexedType                          ; questionCount      ; Question count
