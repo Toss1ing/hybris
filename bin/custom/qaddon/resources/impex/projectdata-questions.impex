@@ -1,7 +1,7 @@
 $productCatalog = electronicsProductCatalog
 $contentCatalog = electronicsContentCatalog
-$productCV = catalogversion(catalog(id[default = $productCatalog]), version[default = 'Online'])[unique = true, default = $productCatalog:Online]
-$contentCV = catalogversion(catalog(id[default = $contentCatalog]), version[default = 'Online'])[unique = true, default = $contentCatalog:Online]
+$productCV = catalogversion(catalog(id[default = $productCatalog]), version[default = 'Staged'])[unique = true, default = $productCatalog:Staged]
+$contentCV = catalogversion(catalog(id[default = $contentCatalog]), version[default = 'Staged'])[unique = true, default = $contentCatalog:Staged]
 $solrIndexedType = electronicsProductType
 $solrSearchQueryTemplate = DEFAULT
 $lang = en
