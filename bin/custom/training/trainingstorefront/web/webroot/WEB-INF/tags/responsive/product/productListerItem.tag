@@ -51,8 +51,16 @@
 		<c:set var="addToCartText" value="${addToCartText}" scope="request"/>
 		<c:set var="addToCartUrl" value="${addToCartUrl}" scope="request"/>
 		
-		<c:if test="${product.questionCount gt 0}">
-			<span class="icon-discussed" aria-hidden="true" style="display:inline-block;margin-left:6px;">?</span>
+		<c:if test="${not empty product.questionCount and product.questionCount gt 0}">
+			<div class="product__listing--questions" style="display: inline-block; margin-left: 6px;">
+				<img src="${originalContextPath}/_ui/addons/qaddon/responsive/common/images/discussion.svg" 
+					 alt="Questions" 
+					 class="product__listing--question-icon" 
+					 style="width: 24px; height: 24px; display: inline-block; vertical-align: middle;"/>
+				<span class="product__listing--question-count" style="margin-left: 4px;">
+					${product.questionCount}
+				</span>
+			</div>
 		</c:if>
 		
 		<div class="addtocart">
