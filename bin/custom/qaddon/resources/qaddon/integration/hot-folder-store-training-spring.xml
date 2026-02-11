@@ -67,7 +67,7 @@
 
     <bean id="stockLevelConverterMapping"
           class="de.hybris.platform.acceleratorservices.dataimport.batch.converter.mapping.impl.DefaultConverterMapping"
-          p:mapping=""
+          p:mapping="stockLevel"
           p:converter-ref="stockLevelConverter"/>
 
 </beans>
