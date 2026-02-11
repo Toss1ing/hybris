@@ -7,6 +7,7 @@
            http://www.springframework.org/schema/context
            http://www.springframework.org/schema/context/spring-context.xsd">
 
+    <import resource="classpath:/qaddon/integration/hot-folder-store-training-spring.xml"/>
     <context:annotation-config/>
 
     <bean id="questionPopulator" class="org.training.populators.QuestionPopulator">
@@ -78,6 +79,43 @@
 
     <bean id="qaddonSampleDataEventListener" parent="abstractGenericAddOnSampleDataEventListener">
         <property name="extensionName" value="qaddon"/>
+    </bean>
+
+    <bean id="questionDao" class="org.training.daos.impl.DefaultQuestionDao">
+        <constructor-arg ref="flexibleSearchService"/>
+    </bean>
+
+    <bean id="questionService" class="org.training.services.impl.DefaultQuestionService">
+        <constructor-arg ref="questionDao"/>
+    </bean>
+
+    <bean id="startQuestionEmailingProcessJob" class="org.training.jobs.StartQuestionEmailingProcessJob">
+        <constructor-arg ref="questionService"/>
+        <constructor-arg ref="businessProcessService"/>
+        <constructor-arg ref="modelService"/>
+        <constructor-arg ref="baseStoreService"/>
+        <constructor-arg ref="baseSiteService"/>
+        <constructor-arg ref="commonI18NService"/>
+        <constructor-arg ref="customerService"/>
+    </bean>
+
+    <bean id="generateQuestionsEmail" parent="abstractGenerateEmailAction">
+        <property name="frontendTemplateName" value="QuestionsEmailTemplate"/>
+    </bean>
+
+    <bean id="questionsEmailSendingProcessDefinitionResource"
+          class="de.hybris.platform.processengine.definition.ProcessDefinitionResource">
+        <property name="resource" value="classpath:/qaddon/process/questions-email-sending-process.xml"/>
+    </bean>
+
+    <bean id="questionsEmailContext" class="org.training.email.QuestionsEmailContext"
+          parent="abstractEmailContext" scope="prototype"/>
+
+    <bean id="questionValidationInterceptor" class="org.training.interceptors.QuestionValidationInterceptor"/>
+
+    <bean id="questionValidationInterceptorMapping" class="de.hybris.platform.servicelayer.interceptor.impl.InterceptorMapping">
+        <property name="interceptor" ref="questionValidationInterceptor"/>
+        <property name="typeCode" value="Question"/>
     </bean>
 
 </beans>

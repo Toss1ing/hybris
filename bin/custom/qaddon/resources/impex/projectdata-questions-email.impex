@@ -1,0 +1,25 @@
+$contentCatalog = electronicsContentCatalog
+$contentCV = catalogversion(catalog(id[default = $contentCatalog]), version[default = 'Staged'])[unique = true, default = $contentCatalog:Staged]
+$emailPackageName = org.training.email
+$emailResource = jar:org.training.constants.QaddonConstants&/qaddon/email
+
+INSERT_UPDATE ServicelayerJob; code[unique = true]      ; springId
+                             ; questionsEmailSendingJob ; startQuestionEmailingProcessJob
+
+INSERT_UPDATE QuestionsEmailSendingCronJob; code[unique = true]          ; job(code)                ; notifyEmail                ; sessionLanguage(isocode)
+                                          ; questionsEmailSendingCronJob ; questionsEmailSendingJob ; kirill.borisenko05@mail.ru ; en
+
+INSERT_UPDATE Trigger; cronjob(code)[unique = true] ; cronExpression
+                     ; questionsEmailSendingCronJob ; 0 0/5 * * * ?
+
+INSERT_UPDATE RendererTemplate; code[unique = true]     ; contextClass                            ; templateScript[lang = en, translator = de.hybris.platform.commerceservices.impex.impl.FileLoaderValueTranslator]; rendererType(code)[default = 'velocity']
+                              ; email-questions-body    ; $emailPackageName.QuestionsEmailContext ; $emailResource/email-questionsBody.vm                                                                           ;
+                              ; email-questions-subject ; $emailPackageName.QuestionsEmailContext ; $emailResource/email-questionsSubject.vm                                                                        ;
+
+INSERT_UPDATE EmailPageTemplate; $contentCV[unique = true]; uid[unique = true]     ; active; frontendTemplateName   ; subject(code)           ; htmlTemplate(code)   ; restrictedPageTypes(code)
+                               ;                          ; QuestionsEmailTemplate ; true  ; QuestionsEmailTemplate ; email-questions-subject ; email-questions-body ; EmailPage
+
+INSERT_UPDATE EmailPage; $contentCV[unique = true]; uid[unique = true]; masterTemplate(uid, $contentCV); approvalStatus(code)[default = 'approved']
+                       ;                          ; QuestionsEmail    ; QuestionsEmailTemplate         ;
+
+

@@ -1,64 +1,105 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<items 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-			xsi:noNamespaceSchemaLocation="items.xsd">
-	<relations>
-		<relation code="Question2Product" localized="false">
-			<sourceElement qualifier="questions" type="Question" collectiontype="list" cardinality="many"
-						   ordered="false">
-				<modifiers read="true" write="true" optional="true" search="true"/>
-			</sourceElement>
-			<targetElement qualifier="product" type="Product" cardinality="one">
-				<modifiers read="true" write="true" optional="false" initial="true" search="true"/>
-			</targetElement>
-		</relation>
-	</relations>
-	<itemtypes>
-		<itemtype code="Question">
-			<deployment table="Questions" typecode="10102"/>
-			<attributes>
-				<attribute qualifier="code" type="java.lang.String">
-					<description>short unique question code</description>
-					<persistence type="property"/>
-					<modifiers unique="true" optional="false" initial="true"/>
-				</attribute>
-				<attribute qualifier="question" type="java.lang.String">
-					<description>question content</description>
-					<persistence type="property"/>
-					<modifiers optional="false" initial="true"/>
-				</attribute>
-				<attribute qualifier="questionCustomer" type="Customer">
-					<description>who asked the question</description>
-					<persistence type="property"/>
-					<modifiers optional="false" initial="true"/>
-				</attribute>
-				<attribute qualifier="answer" type="java.lang.String">
-					<description>answer content</description>
-					<persistence type="property"/>
-					<modifiers optional="true"/>
-				</attribute>
-				<attribute qualifier="answerCustomer" type="Customer">
-					<description>who answered the question</description>
-					<persistence type="property"/>
-					<modifiers optional="true"/>
-				</attribute>
-			</attributes>
-		</itemtype>
-		<itemtype code="QuestionsCMSComponent" extends="SimpleCMSComponent"
-				  abstract="false" jaloclass="org.training.jalo.component.QuestionsCMSComponent">
-			<attributes>
-				<attribute qualifier="font" type="java.lang.Integer">
-					<description>font size</description>
-					<persistence type="property"/>
-					<modifiers optional="true"/>
-					<defaultvalue>10</defaultvalue>
-				</attribute>
-				<attribute qualifier="numberOfQuestionsToShow" type="java.lang.Integer">
-					<description>number of displayed questions</description>
-					<persistence type="property"/>
-					<modifiers optional="false"/>
-					<defaultvalue>3</defaultvalue>
-				</attribute>
-			</attributes>
-		</itemtype>
-	</itemtypes>
+<items xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="items.xsd">
+    <collectiontypes>
+        <collectiontype code="QuestionsSet" elementtype="Question" type="set"/>
+    </collectiontypes>
+    <relations>
+        <relation code="Question2Product" localized="false">
+            <sourceElement qualifier="questions" type="Question" collectiontype="list" cardinality="many"
+                           ordered="false">
+                <modifiers read="true" write="true" optional="true" search="true"/>
+            </sourceElement>
+            <targetElement qualifier="product" type="Product" cardinality="one">
+                <modifiers read="true" write="true" optional="false" initial="true" search="true"/>
+            </targetElement>
+        </relation>
+    </relations>
+    <itemtypes>
+        <itemtype code="Question">
+            <deployment table="Questions" typecode="10102"/>
+            <attributes>
+                <attribute qualifier="code" type="java.lang.String">
+                    <description>short unique question code</description>
+                    <persistence type="property"/>
+                    <modifiers unique="true" optional="false" initial="true"/>
+                </attribute>
+                <attribute qualifier="question" type="java.lang.String">
+                    <description>question content</description>
+                    <persistence type="property"/>
+                    <modifiers optional="false" initial="true"/>
+                </attribute>
+                <attribute qualifier="questionCustomer" type="Customer">
+                    <description>who asked the question</description>
+                    <persistence type="property"/>
+                    <modifiers optional="false" initial="true"/>
+                </attribute>
+                <attribute qualifier="answer" type="java.lang.String">
+                    <description>answer content</description>
+                    <persistence type="property"/>
+                    <modifiers optional="true"/>
+                </attribute>
+                <attribute qualifier="answerCustomer" type="Customer">
+                    <description>who answered the question</description>
+                    <persistence type="property"/>
+                    <modifiers optional="true"/>
+                </attribute>
+                <attribute qualifier="approved" type="java.lang.Boolean">
+                    <description>whether question is approved for display</description>
+                    <persistence type="property"/>
+                    <modifiers optional="true"/>
+                    <defaultvalue>false</defaultvalue>
+                </attribute>
+            </attributes>
+        </itemtype>
+        <itemtype code="QuestionsCMSComponent" extends="SimpleCMSComponent"
+                  abstract="false" jaloclass="org.training.jalo.component.QuestionsCMSComponent">
+            <attributes>
+                <attribute qualifier="font" type="java.lang.Integer">
+                    <description>font size</description>
+                    <persistence type="property"/>
+                    <modifiers optional="true"/>
+                    <defaultvalue>10</defaultvalue>
+                </attribute>
+                <attribute qualifier="numberOfQuestionsToShow" type="java.lang.Integer">
+                    <description>number of displayed questions</description>
+                    <persistence type="property"/>
+                    <modifiers optional="false"/>
+                    <defaultvalue>3</defaultvalue>
+                </attribute>
+            </attributes>
+        </itemtype>
+        <itemtype code="QuestionsEmailSendingProcess" extends="StoreFrontCustomerProcess">
+            <attributes>
+                <attribute qualifier="questions" type="QuestionsSet">
+                    <description>questions to send</description>
+                    <persistence type="property"/>
+                </attribute>
+
+                <attribute qualifier="notifyEmail" type="java.lang.String">
+                    <description>recipient email configured in cronjob</description>
+                    <persistence type="property"/>
+                </attribute>
+
+                <attribute qualifier="emailMessage" type="EmailMessage">
+                    <description>created email message (remove after successful send)</description>
+                    <persistence type="property"/>
+                </attribute>
+            </attributes>
+        </itemtype>
+        <itemtype code="QuestionsEmailSendingCronJob" extends="CronJob">
+            <attributes>
+                <attribute qualifier="notifyEmail" type="java.lang.String">
+                    <description>email address to send new questions to</description>
+                    <persistence type="property"/>
+                    <modifiers optional="false"/>
+                </attribute>
+                <attribute qualifier="lastRunTime" type="java.util.Date">
+                    <description>questions created after this time are considered new</description>
+                    <persistence type="property"/>
+                    <modifiers optional="true"/>
+                </attribute>
+            </attributes>
+        </itemtype>
+    </itemtypes>
 </items>

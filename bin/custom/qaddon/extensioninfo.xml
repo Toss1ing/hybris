@@ -3,8 +3,10 @@
 <extensioninfo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="extensioninfo.xsd">
     <extension abstractclassprefix="Generated" classprefix="Qaddon" description="qaddon extension" managername="QaddonManager" managersuperclass="de.hybris.platform.jalo.extension.Extension" name="qaddon">
         <requires-extension name="addonsupport"/>
+        <requires-extension name="backoffice"/>
         <coremodule generated="true" manager="org.training.jalo.QaddonManager" packageroot="org.training"/>
         <meta key="classpathgen" value="false"/>
         <meta key="deprecated" value="true"/>
+        <meta key="backoffice-module" value="true"/>
     </extension>
 </extensioninfo>
