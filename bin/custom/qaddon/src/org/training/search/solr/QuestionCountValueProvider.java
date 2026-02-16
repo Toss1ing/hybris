@@ -15,7 +15,12 @@ public class QuestionCountValueProvider extends AbstractValueResolver<ProductMod
             IndexedProperty indexedProperty, ProductModel productModel,
             ValueResolverContext<Object, Object> valueResolverContext
     ) throws FieldValueProviderException {
-        int count = productModel.getQuestions() == null ? 0 : productModel.getQuestions().size();
+        int count = 0;
+        if (productModel.getQuestions() != null) {
+            count = (int) productModel.getQuestions().stream()
+                    .filter(q -> Boolean.TRUE.equals(q.getApproved()))
+                    .count();
+        }
         inputDocument.addField(indexedProperty, count, valueResolverContext.getFieldQualifier());
     }
 

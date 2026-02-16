@@ -25,7 +25,9 @@ public class ProductQuestionsPopulator implements Populator<ProductModel, Produc
         if (CollectionUtils.isNotEmpty(source.getQuestions())) {
             List<QuestionData> questions = new ArrayList<>();
             for (QuestionModel questionModel : source.getQuestions()) {
-                questions.add(questionConverter.convert(questionModel));
+                if (Boolean.TRUE.equals(questionModel.getApproved())) {
+                    questions.add(questionConverter.convert(questionModel));
+                }
             }
 
             target.setQuestions(questions);

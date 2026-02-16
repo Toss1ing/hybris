@@ -1,0 +1,31 @@
+#if($ctx.questionsEmailDataMap && !$ctx.questionsEmailDataMap.isEmpty())
+<table>
+    #foreach($entry in $ctx.questionsEmailDataMap.entrySet())
+        <tr>
+            <td style="padding: 10px; background-color: #f2f2f2;">
+                <strong>Product Code: $entry.key</strong>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <ul style="list-style-type: none; padding-left: 20px;">
+                    #foreach($questionsData in $entry.value)
+                        <li style="margin-bottom: 15px; border-bottom: 1px dashed #ccc;">
+                            <p><strong>Question Code:</strong> $questionsData.get("code")</p>
+                            <p><strong>Question:</strong> $questionsData.get("question")</p>
+                            #set($answer = $questionsData.get("answer"))
+                            #if($answer && !$answer.isEmpty())
+                                <p><strong>Answer:</strong> $answer</p>
+                            #else
+                                <p><strong>Answer:</strong> Not answered yet</p>
+                            #end
+                        </li>
+                    #end
+                </ul>
+            </td>
+        </tr>
+    #end
+</table>
+#else
+<p>No new questions found</p>
+#end

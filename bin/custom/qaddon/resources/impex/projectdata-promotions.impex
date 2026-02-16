@@ -1,0 +1,61 @@
+INSERT_UPDATE PromotionSourceRule; code[unique = true]; name                                                           ; website(identifier)   ; priority; conditions; actions
+                                 ; cart_rule_discount ; "Gives 10% a discount if the amount of cart is more than $100" ; "electronicsPromoGrp" ; 500     ; "[
+  {
+    ""definitionId"": ""y_cart_total"",
+    ""parameters"": {
+      ""value"": {
+        ""type"": ""Map(ItemType(Currency),java.math.BigDecimal)"",
+        ""value"": {
+          ""USD"": 100
+        }
+      },
+      ""operator"": {
+        ""type"": ""Enum(de.hybris.platform.ruledefinitions.AmountOperator)"",
+        ""value"": ""GREATER_THAN""
+      }
+    },
+    ""children"": []
+  }
+]"        ; "[
+  {
+    ""definitionId"": ""y_order_percentage_discount"",
+    ""parameters"": {
+      ""value"": {
+        ""uuid"": ""5777a732-2459-4d43-8fd2-dade01ef9c70"",
+        ""type"": ""java.math.BigDecimal"",
+        ""value"": 10
+      }
+    }
+  }
+]"
+
+INSERT_UPDATE SingleCodeCoupon; couponId[unique = true]; name           ; maxRedemptionsPerCustomer; active
+                              ; XYZ12321               ; "10% discount" ; 1                        ; true
+
+INSERT_UPDATE PromotionSourceRule; code[unique = true]   ; name                         ; website(identifier)   ; priority; conditions; actions
+                                 ; coupone_rule_discount ; "coupone gives 10$ discount" ; "electronicsPromoGrp" ; 200     ; "[
+  {
+    ""definitionId"": ""y_qualifying_coupons"",
+    ""parameters"": {
+      ""coupons"": {
+        ""type"": ""List(ItemType(AbstractCoupon))"",
+        ""value"": [
+          ""XYZ12321""
+        ]
+      }
+    },
+    ""children"": []
+  }
+]"        ; "[
+  {
+    ""definitionId"": ""y_order_fixed_discount"",
+    ""parameters"": {
+      ""value"": {
+        ""type"": ""Map(ItemType(Currency),java.math.BigDecimal)"",
+        ""value"": {
+          ""USD"": 10
+        }
+      }
+    }
+  }
+]"
