@@ -1,5 +1,5 @@
 INSERT_UPDATE PromotionSourceRule; code[unique = true]; name                                                           ; website(identifier)   ; priority; conditions; actions
-                                 ; cart_rule_discount      ; "Gives 10% a discount if the amount of cart is more than $100" ; "electronicsPromoGrp" ; 500     ; "[
+                                 ; cart_rule_discount ; "Gives 10% a discount if the amount of cart is more than $100" ; "electronicsPromoGrp" ; 500     ; "[
   {
     ""definitionId"": ""y_cart_total"",
     ""parameters"": {
@@ -32,7 +32,7 @@ INSERT_UPDATE PromotionSourceRule; code[unique = true]; name                    
 INSERT_UPDATE SingleCodeCoupon; couponId[unique = true]; name           ; maxRedemptionsPerCustomer; active
                               ; XYZ12321               ; "10% discount" ; 1                        ; true
 
-INSERT_UPDATE PromotionSourceRule; code[unique = true]                    ; name                         ; website(identifier)   ; priority; conditions; actions
+INSERT_UPDATE PromotionSourceRule; code[unique = true]   ; name                         ; website(identifier)   ; priority; conditions; actions
                                  ; coupone_rule_discount ; "coupone gives 10$ discount" ; "electronicsPromoGrp" ; 200     ; "[
   {
     ""definitionId"": ""y_qualifying_coupons"",
@@ -40,7 +40,7 @@ INSERT_UPDATE PromotionSourceRule; code[unique = true]                    ; name
       ""coupons"": {
         ""type"": ""List(ItemType(AbstractCoupon))"",
         ""value"": [
-          ""SAP2026""
+          ""XYZ12321""
         ]
       }
     },
