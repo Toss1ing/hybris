@@ -1,0 +1,34 @@
+$contentCatalog = electronicsContentCatalog
+$productCatalog = electronicsProductCatalog
+$contentCV = catalogversion(catalog(id[default = $contentCatalog]), version[default = 'Online'])[unique = true, default = $contentCatalog:Online]
+$productCV = catalogversion(catalog(id[default = $productCatalog]), version[default = 'Online'])[unique = true, default = $productCatalog:Online]
+$solrIndexedType = electronicsProductType
+$solrSearchQueryTemplate = DEFAULT
+$lang = en
+
+INSERT_UPDATE WarrantyYears; code[unique = true]; years
+                           ; warranty-2-years   ; 2
+
+INSERT_UPDATE Product; $productCV[unique = true]; code[unique = true]; warrantyYears(code)
+                     ;                          ; 443175             ; warranty-2-years
+
+INSERT_UPDATE ContentSlotName; name[unique = true]; template(uid, $contentCV)[unique = true][default = 'ProductDetailsPageTemplate']; validComponentTypes(code); compTypeGroup(code)
+                             ; WarrantySection    ;                                                                                 ; WarrantyCMSComponent     ; wide
+
+INSERT_UPDATE WarrantyCMSComponent; $contentCV[unique = true]; uid[unique = true]       ; name
+                                  ;                          ; WarrantySectionComponent ; Warranty Section Component
+
+INSERT_UPDATE ContentSlot; $contentCV[unique = true]; uid[unique = true]   ; name              ; active; cmsComponents(uid, $contentCV)
+                         ;                          ; WarrantySectionSlot ; Warranty Section ; true  ; WarrantySectionComponent
+
+INSERT_UPDATE ContentSlotForTemplate; $contentCV[unique = true]; uid[unique = true]             ; position[unique = true]; pageTemplate(uid, $contentCV)[unique = true][default = 'ProductDetailsPageTemplate']; contentSlot(uid, $contentCV)[unique = true]; allowOverwrite
+                                    ;                          ; WarrantySection-ProductDetails ; WarrantySection        ;                                                                                     ; WarrantySectionSlot                        ; true
+
+INSERT_UPDATE SolrIndexedProperty; solrIndexedType(identifier)[unique = true]; name[unique = true]; type(code); sortableType(code); currency[default = false]; localized[default = false]; multiValue[default = false]; useForSpellchecking[default = false]; useForAutocomplete[default = false]; facet[default = false]; facetType(code); facetSort(code); priority; visible; includeInResponse; fieldValueProvider         ; valueProviderParameter; rangeSet(name); facetDisplayNameProvider; topValuesProvider        ; customFacetSortProvider
+                                 ; $solrIndexedType                          ; warrantyYears      ; int       ; int               ; false                    ; false                     ; false                      ; false                               ; false                              ; true                  ; MultiSelectOr  ; Alpha          ; 500     ; true   ; true             ; warrantyYearsValueProvider ;                       ;               ;                         ; defaultTopValuesProvider ; facetNameSortProviderAscending
+
+INSERT_UPDATE SolrSearchQueryProperty; indexedProperty(name, solrIndexedType(identifier))[unique = true]; searchQueryTemplate(name, indexedType(identifier))[unique = true]; facet[default = true]; facetType(code); priority; includeInResponse; facetSortProvider              ; facetTopValuesProvider
+                                     ; warrantyYears:$solrIndexedType                                   ; $solrSearchQueryTemplate:$solrIndexedType                        ; true                 ; MultiSelectOr  ; 500     ; true             ; facetNameSortProviderAscending ; defaultTopValuesProvider
+
+UPDATE SolrIndexedProperty; solrIndexedType(identifier)[unique = true]; name[unique = true]; displayName[lang = $lang]
+                          ; $solrIndexedType                          ; warrantyYears      ; Warranty Years

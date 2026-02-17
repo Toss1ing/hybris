@@ -63,6 +63,14 @@
 			</div>
 		</c:if>
 		
+		<c:if test="${not empty product.warrantyYears and product.warrantyYears gt 0}">
+			<div class="product__listing--warranty" style="display: inline-block; margin-left: 6px;">
+				<span class="product__listing--warranty-years" style="margin-left: 4px;">
+					${product.warrantyYears} year<c:if test="${product.warrantyYears > 1}">s</c:if> warranty
+				</span>
+			</div>
+		</c:if>
+		
 		<div class="addtocart">
 			<div id="actions-container-for-${fn:escapeXml(component.uid)}" class="row">
 				<action:actions element="div" parentComponent="${component}"  />

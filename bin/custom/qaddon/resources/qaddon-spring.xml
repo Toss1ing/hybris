@@ -35,6 +35,16 @@
         </property>
     </bean>
 
+    <bean id="productWarrantyYearsPopulator" class="org.training.populators.ProductWarrantyYearsPopulator"/>
+
+    <bean id="productWarrantyYearsPopulatorList" parent="abstractPopulatorList">
+        <property name="populators">
+            <list>
+                <ref bean="productWarrantyYearsPopulator"/>
+            </list>
+        </property>
+    </bean>
+
     <bean id="questionCountValueProvider" class="org.training.search.solr.QuestionCountValueProvider"
           parent="abstractValueResolver"/>
 
@@ -44,6 +54,17 @@
           depends-on="commerceSearchResultProductConverter" parent="listMergeDirective">
         <property name="listPropertyDescriptor" value="populators"/>
         <property name="add" ref="searchResultQuestionCountPopulator"/>
+    </bean>
+
+    <bean id="warrantyYearsValueProvider" class="org.training.search.solr.WarrantyYearsValueProvider"
+          parent="abstractValueResolver"/>
+
+    <bean id="searchResultWarrantyYearsPopulator" class="org.training.populators.SearchResultWarrantyYearsPopulator"/>
+
+    <bean id="commerceSearchResultProductConverterWarrantyYearsListMergeDirective"
+          depends-on="commerceSearchResultProductConverter" parent="listMergeDirective">
+        <property name="listPropertyDescriptor" value="populators"/>
+        <property name="add" ref="searchResultWarrantyYearsPopulator"/>
     </bean>
 
     <bean id="questionsProductConfiguredPopulator"
@@ -57,6 +78,20 @@
 
     <bean id="questionsProductFacade" class="org.training.facades.product.impl.DefaultQuestionsProductFacade">
         <constructor-arg ref="questionsProductConfiguredPopulator"/>
+        <constructor-arg ref="productService"/>
+    </bean>
+
+    <bean id="warrantyProductConfiguredPopulator"
+          class="de.hybris.platform.commercefacades.converter.impl.DefaultConfigurablePopulator">
+        <property name="populators">
+            <map key-type="org.training.facades.product.WarrantyProductOption">
+                <entry key="WARRANTY_YEARS" value-ref="productWarrantyYearsPopulatorList"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="warrantyProductFacade" class="org.training.facades.product.impl.DefaultWarrantyProductFacade">
+        <constructor-arg ref="warrantyProductConfiguredPopulator"/>
         <constructor-arg ref="productService"/>
     </bean>
 

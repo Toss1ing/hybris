@@ -21,6 +21,9 @@
 	<cms:pageSlot position="QuestionsSection" var="comp" element="div" class="productDetailsPageQuestionsSection">
 		<cms:component component="${comp}" element="div" class="productDetailsPageQuestionsSection-component"/>
 	</cms:pageSlot>
+	<cms:pageSlot position="WarrantySection" var="comp" element="div" class="productDetailsPageWarrantySection">
+		<cms:component component="${comp}" element="div" class="productDetailsPageWarrantySection-component"/>
+	</cms:pageSlot>
 	<cms:pageSlot position="Section4" var="comp" element="div" class="productDetailsPageSection4">
 		<cms:component component="${comp}" element="div" class="productDetailsPageSection4-component"/>
 	</cms:pageSlot>
